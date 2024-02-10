@@ -115,19 +115,21 @@ router.post('/login', async (req, res) => {
       const sendMail = async (transporter: any, mailOptions: any) => {
         try {
           await transporter.sendMail(mailOptions);
-          return res.status(200).json('mail sent');
+          // return res.status(200).json('mail sent');
+          return console.log('mail sent');
         } catch (error) {
-          return res.status(200).json({ error: 'unable to send mail' });
+          // return res.status(200).json({ error: 'unable to send mail' });
+          return console.log(error);
         }
       };
       sendMail(transporter, mailOptions);
     } catch (error: any) {
       return res.status(400).json({ error: 'unable to send email' });
     }
-    res.sendStatus(200);
+    return res.sendStatus(200);
   } catch (e) {
     console.log(e);
-    res
+    return res
       .status(400)
       .json({ error: "Couldn't start the authentication process" });
   }
@@ -186,7 +188,7 @@ router.post('/authenticate', async (req, res) => {
   // generate the JWT token
   const authToken = generateAuthToken(apiToken.id);
 
-  res.json({ authToken });
+  return res.json({ authToken });
 });
 
 export default router;
