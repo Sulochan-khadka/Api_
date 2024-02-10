@@ -14,6 +14,9 @@ app.use('/user', authenticateToken, userRouter);
 app.use('/question', authenticateToken, questionRouter);
 app.use('/answer', authenticateToken, answerRouter);
 app.use('/auth', authRouter);
+app.use('/', (req, res) => {
+  res.send('Hello World!');
+});
 
 app.listen(port, () => {
   console.log('server is listening');
