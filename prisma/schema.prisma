@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Question{
+id Int @id @default(autoincrement())
+title String
+description String
+type String
+status String @default("open")
+createdAt DateTime @default(now())
+upvote Int @default(0)
+downvote Int @default(0)
+answers Answer[]
+userId Int
+user User @relation(fields: [userId],references: [id])
+}
+
+model Answer{
+id Int @id @default(autoincrement())
+body String 
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+upvote Int @default(0)
+downvote Int @default(0)
+questionId Int 
+question Question @relation(fields: [questionId],references: [id])
+userId Int
+user User @relation(fields: [userId],references: [id])
+}
+
+model User{
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+  email String @unique
+  name String?
+  username String? @unique
+  image String?
+  type String?
+  bio String?
+  ip String?
+  answers Answer[]
+  questions Question[]
+  tokens Token[]
+}
+
+model Token{
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  type String
+  emailToken String? @unique
+  valid Boolean @default(true)
+  expiration DateTime
+  userId Int
+  user User @relation(fields: [userId],references: [id])
+}
