@@ -1,8 +1,7 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import nodemailer, { Transporter } from 'nodemailer';
-import { transcode } from 'buffer';
+import nodemailer from 'nodemailer';
 require('dotenv').config();
 
 const EMAIL_TOKEN_EXPIRATION_MINUTES = 10;
@@ -92,7 +91,6 @@ router.post('/login', async (req, res) => {
     console.log(createdToken);
     const data = { emailToken };
     // TODO send emailToken to user's email
-    // await sendEmailToken(email, emailToken);
     try {
       const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -126,7 +124,7 @@ router.post('/login', async (req, res) => {
     } catch (error: any) {
       return res.status(400).json({ error: 'unable to send email' });
     }
-    // res.sendStatus(200);
+    res.sendStatus(200);
   } catch (e) {
     console.log(e);
     res
